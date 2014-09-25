@@ -35,7 +35,6 @@
     <orderEntry type="library" exported="" name="Gradle: ivy-2.3.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: gpars-1.2.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: ehcache-2.8.4" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: micro-infra-spring-0.4.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: cglib-nodep-3.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: aspectjweaver-1.8.2" level="project" />
     <orderEntry type="library" exported="" name="Gradle: spring-boot-starter-1.1.6.RELEASE" level="project" />
@@ -56,9 +55,6 @@
     <orderEntry type="library" exported="" name="Gradle: hamcrest-core-1.3" level="project" />
     <orderEntry type="library" exported="" name="Gradle: multiverse-core-0.7.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: jsr166y-1.7.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: micro-infra-spring-base-0.4.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: micro-infra-spring-swagger-0.4.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: micro-infra-spring-swagger-ui-0.4.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: spring-boot-1.1.6.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="Gradle: spring-boot-autoconfigure-1.1.6.RELEASE" level="project" />
     <orderEntry type="library" exported="" name="Gradle: spring-boot-starter-logging-1.1.6.RELEASE" level="project" />
@@ -184,6 +180,10 @@
     <orderEntry type="library" scope="TEST" name="Gradle: httpcore-4.2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: spring-webmvc-4.1.0.RELEASE" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: spring-web-4.1.0.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: micro-infra-spring-0.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: micro-infra-spring-base-0.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: micro-infra-spring-swagger-0.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: micro-infra-spring-swagger-ui-0.3.0" level="project" />
   </component>
 </module>
 
