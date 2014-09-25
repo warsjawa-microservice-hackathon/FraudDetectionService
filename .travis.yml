@@ -1,20 +1,30 @@
 language: groovy
+
 jdk:
-- oraclejdk8
-
-install:
-- true
-
-before_script:
- - "echo $JAVA_OPTS"
- - "export JAVA_OPTS=-Xmx512m"
-
-script:
-- ./gradlew build --stacktrace
+  - oraclejdk8
 
 env:
-- TERM=dumb
+  global:
+    - JAVA_OPTS=-Xmx512m
+    - GROUP_ID="pl.warsjawa"
+    - ARTIFACT="fraud-detection-service"
+    - VERSION=CD-${TRAVIS_BUILD_NUMBER}
+    - RUNDECK_URL="http://rundeck.warsjawa.uservices.pl:4440"
+    - RUNDECK_JOB_ID="da97ec93-39d1-48c4-a421-4f63304c1628"
+    - RUNDECK_JOB_ARGS="-groupId ${GROUP_ID} -artifactId ${ARTIFACT} -version ${VERSION}"
+    - RUNDECK_AUTH_TOKEN="ZnpwK9YT5w0CJDuVyzMa7im5uJIEtJK9"
+
+before_install:
+  - sudo apt-get update -qq
+
+install:
+  - sudo apt-get install curl
+
+script:
+  - ./gradlew build --stacktrace
 
 after_success:
-- ./gradlew test jacocoTestReport coveralls -Pcoverage
-
+  - ./gradlew clean build uploadArchives
+  - 'curl -s -H "X-Rundeck-Auth-Token: ${RUNDECK_AUTH_TOKEN}" --data-urlencode "argString=${RUNDECK_JOB_ARGS}" "${RUNDECK_URL}/api/1/job/${RUNDECK_JOB_ID}/run"'
+  - ./gradlew test jacocoTestReport coveralls -Pcoverage
+  - ./gradlew uptodate
