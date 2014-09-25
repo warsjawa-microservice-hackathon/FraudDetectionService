@@ -1,5 +1,13 @@
+.idea
+*.iml
+build
+/bin
 .gradle
-build/
-
-# Ignore Gradle GUI config
-gradle-app.setting
+.project
+.settings
+.classpath
+commitHash.txt
+logs
+.log
+.zip
+/out
