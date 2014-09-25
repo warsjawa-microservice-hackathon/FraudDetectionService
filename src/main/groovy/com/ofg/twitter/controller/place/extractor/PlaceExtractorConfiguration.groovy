@@ -3,6 +3,7 @@ package com.ofg.twitter.controller.place.extractor
 import com.codahale.metrics.Meter
 import com.codahale.metrics.MetricRegistry
 import com.ofg.infrastructure.discovery.ServiceResolver
+import com.ofg.infrastructure.web.resttemplate.custom.RestTemplate
 import com.ofg.twitter.controller.place.PlacesJsonBuilder
 import com.ofg.twitter.controller.place.extractor.metrics.ExtractorMetricsConfiguration
 import com.ofg.twitter.controller.place.extractor.metrics.MatchProbabilityMetrics
@@ -17,8 +18,8 @@ import org.springframework.web.client.RestOperations
 class PlaceExtractorConfiguration {
 
     @Bean
-    CityFinder cityFinder(RestOperations restTemplate, @Value('${city.finding.service.url:http://api.openweathermap.org/data/2.5/weather}') String cityFindingServiceUrl) {
-        return new CityFinder(restTemplate, cityFindingServiceUrl)
+    CityFinder cityFinder(@Value('${city.finding.service.url:http://api.openweathermap.org/data/2.5/weather}') String cityFindingServiceUrl) {
+        return new CityFinder(new RestTemplate(), cityFindingServiceUrl)
     }
     
     @Bean
