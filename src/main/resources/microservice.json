@@ -2,7 +2,6 @@
     "europe": {
         "this": "pl/warsjawa/fraud-detection-service",
         "dependencies": {
-            "decision_maker" : "pl/warsjawa/loan-application-decision-maker"
         }
     }
 }
