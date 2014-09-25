@@ -14,7 +14,7 @@ class CityFinder {
     }
 
     @Cacheable('cities')
-    Optional<Place.PlaceDetails> findCityFromCoordinates(long latitude, long longitude) {
+    Optional<Place.PlaceDetails> findCityFromCoordinates(Double latitude, Double longitude) {
         String cityResponse = weatherClient.findCity(latitude, longitude)
         def parsedCityResponse = new JsonSlurper().parseText(cityResponse)
         if (!isStatusResponseOk(parsedCityResponse)) {

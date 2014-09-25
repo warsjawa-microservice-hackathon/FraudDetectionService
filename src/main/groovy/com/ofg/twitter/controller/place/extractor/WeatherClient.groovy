@@ -15,7 +15,7 @@ class WeatherClient {
     }
 
 
-    String findCity(long latitude, long longitude) {
+    String findCity(Double latitude, Double longitude) {
         return serviceRestClient.forExternalService()
                 .get()
                 .onUrl("$cityFindingServiceUrl?lat=${latitude.toInteger()}&lon=${longitude.toInteger()}")
