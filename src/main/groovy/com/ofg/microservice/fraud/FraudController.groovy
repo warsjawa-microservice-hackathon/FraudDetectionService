@@ -42,15 +42,15 @@ class FraudController {
 
         log.info("Analyzing loan application (id={}): {}", loanApplicationId, loanApplication)
 
-        loanApplication.fraudStatus = fraudService.determineClientType(loanApplication)
-        log.info("Client status is {}", loanApplication.fraudStatus)
+        FraudStatus fraudStatus = fraudService.determineClientFraudStatus(loanApplication)
+        log.info("Client status is {}", fraudStatus)
 
-        if (loanApplication.fraudStatus == ClientType.FISHY) {
+        if (fraudStatus == FraudStatus.FISHY) {
             log.info("Client is fishy, reporting to decision maker")
             serviceRestClient.forService(DECISION_MAKER)
                     .put()
                     .onUrl(DECISION_MAKER_URL_PREFIX + loanApplicationId)
-                    .body(JsonOutput.toJson(loanApplication))
+                    .body(JsonOutput.toJson(new LoanAppForDecisionService(loanApplication, fraudStatus)))
                     .withHeaders()
                     .contentTypeJson()
                     .andExecuteFor()

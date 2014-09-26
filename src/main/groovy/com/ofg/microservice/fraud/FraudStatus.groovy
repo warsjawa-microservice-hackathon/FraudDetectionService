@@ -1,6 +1,6 @@
 package com.ofg.microservice.fraud
 
-enum ClientType {
+enum FraudStatus {
     FRAUD,
     FISHY,
     GOOD;

@@ -5,5 +5,15 @@ class LoanApplication {
     String lastName
     String job
     BigDecimal amount
-    ClientType fraudStatus
+
+
+    @Override
+    public String toString() {
+        return "LoanApplication{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", job='" + job + '\'' +
+                ", amount=" + amount +
+                '}';
+    }
 }

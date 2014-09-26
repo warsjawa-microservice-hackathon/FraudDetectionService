@@ -5,19 +5,19 @@ import org.springframework.stereotype.Service
 @Service
 class FraudService {
 
-    public ClientType determineClientType(LoanApplication loanApplication) {
+    public FraudStatus determineClientFraudStatus(LoanApplication loanApplication) {
         if (loanApplication.job == "OTHER" ||
                 loanApplication.amount > 2000 ||
                 loanApplication.lastName?.length() < 2) {
-            return ClientType.FRAUD
+            return FraudStatus.FRAUD
         } else if ("FINANCE SECTOR" == loanApplication.job ||
                 (loanApplication.amount > 1000 && loanApplication.amount < 2000) ||
                 loanApplication.lastName?.length() > 25) {
-            return ClientType.FISHY
+            return FraudStatus.FISHY
         } else if ("IT" == loanApplication.job ||
                 loanApplication.amount < 2000 ||
                 loanApplication.lastName?.length() < 2) {
-            return ClientType.GOOD
+            return FraudStatus.GOOD
         }
     }
 }
