@@ -3,6 +3,7 @@ import com.github.tomakehurst.wiremock.client.UrlMatchingStrategy
 import com.ofg.base.MicroserviceMvcWiremockSpec
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import spock.lang.Ignore
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*
 import static com.jayway.awaitility.Awaitility.await
@@ -14,7 +15,7 @@ import static java.util.concurrent.TimeUnit.SECONDS
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-
+@Ignore
 class AcceptanceSpec extends MicroserviceMvcWiremockSpec {
        
     static final String ROOT_PATH = '/api'

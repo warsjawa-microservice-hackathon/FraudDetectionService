@@ -1,5 +1,8 @@
 package com.ofg.twitter.controller.place.extractor
 
+import spock.lang.Ignore
+
+@Ignore
 class WeatherApiResponses {
 
     public static final String CITY_FOUND = '''

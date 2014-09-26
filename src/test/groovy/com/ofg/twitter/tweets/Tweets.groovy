@@ -1,5 +1,8 @@
 package com.ofg.twitter.tweets
 
+import spock.lang.Ignore
+
+@Ignore
 class Tweets {
 
     public static String TWEET_WITH_PLACE = '''

@@ -3,8 +3,9 @@ import com.ofg.twitter.controller.place.Place
 import com.ofg.twitter.controller.place.extractor.metrics.MatchProbabilityMetrics
 import com.ofg.twitter.tweets.Tweets
 import groovy.json.JsonSlurper
+import spock.lang.Ignore
 import spock.lang.Specification
-
+@Ignore
 class CoordinatesPlaceExtractorSpec extends Specification {
 
     MatchProbabilityMetrics metrics = Stub()

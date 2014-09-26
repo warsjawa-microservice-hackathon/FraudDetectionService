@@ -4,11 +4,12 @@ import com.ofg.twitter.controller.place.Place
 import com.ofg.twitter.controller.place.extractor.PlaceExtractor.PlaceResolutionProbability
 import com.ofg.twitter.controller.place.extractor.metrics.MatchProbabilityMetrics
 import groovy.json.JsonSlurper
+import spock.lang.Ignore
 import spock.lang.Specification
 
 import static com.ofg.twitter.tweets.Tweets.TWEET_WITH_PLACE
 import static com.ofg.twitter.tweets.Tweets.TWEET_WITHOUT_A_PLACE
-
+@Ignore
 class PlaceSectionExtractorSpec extends Specification {
 
     MatchProbabilityMetrics matchProbabilityMetrics = Mock()
