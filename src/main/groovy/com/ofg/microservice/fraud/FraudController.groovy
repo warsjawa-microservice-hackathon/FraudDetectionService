@@ -4,7 +4,6 @@ import com.ofg.infrastructure.web.resttemplate.fluent.ServiceRestClient
 import com.wordnik.swagger.annotations.Api
 import com.wordnik.swagger.annotations.ApiOperation
 import groovy.json.JsonOutput
-import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -16,9 +15,6 @@ import javax.validation.constraints.NotNull
 
 import static com.ofg.microservice.Collaborators.DECISION_MAKER
 
-/**
- * Created by mihn on 26.09.14.
- */
 @Slf4j
 @RestController
 @RequestMapping('/api/loanApplication')

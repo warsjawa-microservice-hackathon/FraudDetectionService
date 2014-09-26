@@ -1,13 +1,7 @@
 package com.ofg.microservice.fraud
 
-import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 
-import java.security.Provider
-
-/**
- * Created by dst on 26.09.14.
- */
 @Service
 class FraudService {
 
