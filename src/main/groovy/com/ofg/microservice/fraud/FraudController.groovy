@@ -1,6 +1,9 @@
 package com.ofg.microservice.fraud
 
 import com.ofg.infrastructure.web.resttemplate.fluent.ServiceRestClient
+import com.ofg.microservice.Collaborators
+import com.ofg.twitter.controller.ClientType
+import com.ofg.twitter.controller.LoanApplication
 import com.wordnik.swagger.annotations.Api
 import com.wordnik.swagger.annotations.ApiOperation
 import groovy.json.JsonOutput
@@ -10,9 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RestController
 
 import javax.validation.constraints.NotNull
+
+import static com.ofg.microservice.Collaborators.DECISION_MAKER
 
 /**
  * Created by mihn on 26.09.14.
@@ -26,7 +35,6 @@ class FraudController {
     private ServiceRestClient serviceRestClient
 
 
-    private static final DECISION_MAKER = "decision-make"
     private static final DECISION_MAKER_URL = "/api/loanApplication/"
 
     @RequestMapping(
@@ -41,7 +49,6 @@ class FraudController {
 
         log.info("Loan application request: {}, id: {}", loanApplication.toString(), loanApplicationId)
 
-        // TODO(dst): add logic here
         loanApplication.fraudStatus = determineClientType(loanApplication)
         log.info("client status is {}", loanApplication.fraudStatus)
         if (loanApplication.fraudStatus == ClientType.FISHY) {
