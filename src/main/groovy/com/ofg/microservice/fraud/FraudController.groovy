@@ -24,11 +24,11 @@ import static com.ofg.microservice.Collaborators.DECISION_MAKER
 @RequestMapping('/api/loanApplication')
 @Api(value = "pairId", description = "Collects places from tweets and propagates them to Collerators")
 class FraudController {
+
+    private static final DECISION_MAKER_URL_PREFIX = "/api/loanApplication/"
+
     @Autowired
     private ServiceRestClient serviceRestClient
-
-
-    private static final DECISION_MAKER_URL = "/api/loanApplication/"
 
     @RequestMapping(
             value = '/{loanApplicationId}',
@@ -37,8 +37,9 @@ class FraudController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Async collecting and propagating of tweets for a given pairId",
             notes = "This will asynchronously call tweet collecting, place extracting and their propagation to Collerators")
-    ResponseEntity<Object> getPlacesFromTweets(@PathVariable("loanApplicationId") @NotNull long loanApplicationId,
-                                               @RequestBody @NotNull LoanApplication loanApplication) {
+    ResponseEntity<Object> analyzeLoanApplication(
+            @PathVariable("loanApplicationId") @NotNull long loanApplicationId,
+            @RequestBody @NotNull LoanApplication loanApplication) {
 
         log.info("Loan application request: {}, id: {}", loanApplication.toString(), loanApplicationId)
 
@@ -48,7 +49,7 @@ class FraudController {
             log.info("client is fishy, reporting to decisionmaker")
             serviceRestClient.forService(DECISION_MAKER)
                     .post()
-                    .onUrl(DECISION_MAKER_URL + loanApplicationId)
+                    .onUrl(DECISION_MAKER_URL_PREFIX + loanApplicationId)
                     .body(JsonOutput.toJson(loanApplication))
                     .withHeaders()
                     .contentTypeJson()
