@@ -18,7 +18,7 @@ import static com.ofg.microservice.Collaborators.DECISION_MAKER
 @Slf4j
 @RestController
 @RequestMapping('/api/loanApplication')
-@Api(value = "pairId", description = "Collects places from tweets and propagates them to Collerators")
+@Api(value = "Fraud detection", description = "Detects frouds")
 class FraudController {
 
     private static final DECISION_MAKER_URL_PREFIX = "/api/loanApplication/"
@@ -34,8 +34,8 @@ class FraudController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "Async collecting and propagating of tweets for a given pairId",
-            notes = "This will asynchronously call tweet collecting, place extracting and their propagation to Collerators")
+    @ApiOperation(value = "Analyzes loan application",
+            notes = "Verifies if client is good, fishy or froud")
     ResponseEntity<Object> analyzeLoanApplication(
             @PathVariable("loanApplicationId") @NotNull long loanApplicationId,
             @RequestBody @NotNull LoanApplication loanApplication) {
