@@ -30,6 +30,9 @@ class FraudController {
     @Autowired
     private ServiceRestClient serviceRestClient
 
+    @Autowired
+    private FraudService fraudService
+
     @RequestMapping(
             value = '/{loanApplicationId}',
             method = RequestMethod.PUT,
@@ -41,12 +44,13 @@ class FraudController {
             @PathVariable("loanApplicationId") @NotNull long loanApplicationId,
             @RequestBody @NotNull LoanApplication loanApplication) {
 
-        log.info("Loan application request: {}, id: {}", loanApplication.toString(), loanApplicationId)
+        log.info("Analyzing loan application (id={}): {}", loanApplicationId, loanApplication)
 
-        loanApplication.fraudStatus = determineClientType(loanApplication)
-        log.info("client status is {}", loanApplication.fraudStatus)
+        loanApplication.fraudStatus = fraudService.determineClientType(loanApplication)
+        log.info("Client status is {}", loanApplication.fraudStatus)
+
         if (loanApplication.fraudStatus == ClientType.FISHY) {
-            log.info("client is fishy, reporting to decisionmaker")
+            log.info("Client is fishy, reporting to decision maker")
             serviceRestClient.forService(DECISION_MAKER)
                     .put()
                     .onUrl(DECISION_MAKER_URL_PREFIX + loanApplicationId)
@@ -60,34 +64,6 @@ class FraudController {
         return new ResponseEntity<Object>(HttpStatus.OK)
     }
 
-    private ClientType determineClientType(LoanApplication loanApplication) {
-        if (loanApplication.job == "OTHER" ||
-                loanApplication.amount > 2000 ||
-                loanApplication.lastName?.length() < 2) {
-            return ClientType.FRAUD
-        } else if ("FINANCE SECTOR" == loanApplication.job ||
-                (loanApplication.amount > 1000 && loanApplication.amount < 2000) ||
-                loanApplication.lastName?.length() > 25) {
-            return ClientType.FISHY
-        } else if ("IT" == loanApplication.job ||
-                loanApplication.amount < 2000 ||
-                loanApplication.lastName?.length() < 2) {
-            return ClientType.GOOD
-        }
-    }
 }
 
-@ToString
-class LoanApplication {
-    String firstName
-    String lastName
-    String job
-    BigDecimal amount
-    ClientType fraudStatus
-}
 
-enum ClientType {
-    FRAUD,
-    FISHY,
-    GOOD;
-}
