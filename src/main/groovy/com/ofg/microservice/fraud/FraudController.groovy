@@ -45,7 +45,6 @@ class FraudController {
 
         loanApplication.fraudStatus = determineClientType(loanApplication)
         log.info("client status is {}", loanApplication.fraudStatus)
-
         if (loanApplication.fraudStatus == ClientType.FISHY) {
             log.info("client is fishy, reporting to decisionmaker")
             serviceRestClient.forService(DECISION_MAKER)
