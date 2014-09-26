@@ -6,6 +6,7 @@ import com.ofg.twitter.controller.LoanApplication
 import com.wordnik.swagger.annotations.Api
 import com.wordnik.swagger.annotations.ApiOperation
 import groovy.json.JsonOutput
+import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -79,4 +80,19 @@ class FraudController {
             return ClientType.GOOD
         }
     }
+}
+
+@ToString
+class LoanApplication {
+    String firstName
+    String lastName
+    String job
+    BigDecimal amount
+    ClientType fraudStatus
+}
+
+enum ClientType {
+    FRAUD,
+    FISHY,
+    GOOD;
 }
