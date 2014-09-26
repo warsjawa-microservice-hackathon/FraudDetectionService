@@ -1,8 +1,10 @@
 package com.ofg.twitter.controller
 
+import com.ofg.infrastructure.web.resttemplate.fluent.ServiceRestClient
 import com.ofg.twitter.controller.place.extractor.PropagationWorker
 import com.wordnik.swagger.annotations.Api
 import com.wordnik.swagger.annotations.ApiOperation
+import groovy.json.JsonOutput
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,6 +27,11 @@ class PairIdController {
 
     @Autowired private PropagationWorker propagationWorker
 
+    @Autowired private ServiceRestClient serviceRestClient
+
+
+    private static final DECISION_MAKER = "decision-make"
+    private static final DECISION_MAKER_URL = "/api/loanApplication/"
 
     @RequestMapping(
             value = '/{loanApplicationId}',
@@ -36,15 +43,28 @@ class PairIdController {
     Callable<Void> getPlacesFromTweets(@PathVariable("loanApplicationId") @NotNull long loanApplicationId,
                                        @RequestBody @NotNull LoanApplication loanApplication) {
 
-//        propagationWorker.collectAndPropagate(pairId, tweets)
         log.info("Loan application request: {}, id: {}", loanApplication.toString(), loanApplicationId)
+
+        // TODO(dst): add logic here
+        loanApplication.fraudStatus = "SOME_STATUS"
+
+
+        serviceRestClient.forService(DECISION_MAKER)
+                .post()
+                .onUrl(DECISION_MAKER_URL + loanApplicationId)
+                .body(JsonOutput.toJson(loanApplication))
+                .withHeaders()
+                .contentTypeJson()
+                .andExecuteFor()
+                .anObject()
+                .ofType(String)
     }
 }
 @ToString
 class LoanApplication {
-    String firstName;
-    String lastName;
-    String job;
-    BigDecimal amount;
+    String firstName
+    String lastName
+    String job
+    BigDecimal amount
+    String fraudStatus
 }
-
