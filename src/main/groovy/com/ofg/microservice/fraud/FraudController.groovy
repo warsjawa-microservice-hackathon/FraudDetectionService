@@ -1,10 +1,11 @@
-package com.ofg.twitter.controller
+package com.ofg.microservice.fraud
 
 import com.ofg.infrastructure.web.resttemplate.fluent.ServiceRestClient
+import com.ofg.twitter.controller.ClientType
+import com.ofg.twitter.controller.LoanApplication
 import com.wordnik.swagger.annotations.Api
 import com.wordnik.swagger.annotations.ApiOperation
 import groovy.json.JsonOutput
-import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -13,17 +14,19 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RestController
 
 import javax.validation.constraints.NotNull
 
-import static org.springframework.web.bind.annotation.RequestMethod.PUT
-
+/**
+ * Created by mihn on 26.09.14.
+ */
 @Slf4j
 @RestController
 @RequestMapping('/api/loanApplication')
 @Api(value = "pairId", description = "Collects places from tweets and propagates them to Collerators")
-class PairIdController {
+class FraudController {
     @Autowired
     private ServiceRestClient serviceRestClient
 
@@ -33,7 +36,7 @@ class PairIdController {
 
     @RequestMapping(
             value = '/{loanApplicationId}',
-            method = PUT,
+            method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Async collecting and propagating of tweets for a given pairId",
@@ -46,7 +49,7 @@ class PairIdController {
         // TODO(dst): add logic here
         loanApplication.fraudStatus = determineClientType(loanApplication)
         log.info("client status is {}", loanApplication.fraudStatus)
-        if(loanApplication.fraudStatus==ClientType.FISHY) {
+        if (loanApplication.fraudStatus == ClientType.FISHY) {
             log.info("client is fishy, reporting to decisionmaker")
             serviceRestClient.forService(DECISION_MAKER)
                     .post()
@@ -76,19 +79,4 @@ class PairIdController {
             return ClientType.GOOD
         }
     }
-}
-
-@ToString
-class LoanApplication {
-    String firstName
-    String lastName
-    String job
-    BigDecimal amount
-    ClientType fraudStatus
-}
-
-enum ClientType {
-    FRAUD,
-    FISHY,
-    GOOD;
 }
