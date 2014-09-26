@@ -35,7 +35,7 @@ class FraudController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Analyzes loan application",
-            notes = "Verifies if client is good, fishy or froud")
+            notes = "Verifies if client is good, fishy or fraud")
     ResponseEntity<Object> analyzeLoanApplication(
             @PathVariable("loanApplicationId") @NotNull long loanApplicationId,
             @RequestBody @NotNull LoanApplication loanApplication) {
@@ -47,19 +47,27 @@ class FraudController {
 
         if (fraudStatus == FraudStatus.FISHY) {
             log.info("Client is fishy, reporting to decision maker")
-            serviceRestClient.forService(DECISION_MAKER)
-                    .put()
-                    .onUrl(DECISION_MAKER_URL_PREFIX + loanApplicationId)
-                    .body(JsonOutput.toJson(new LoanAppForDecisionService(loanApplication, fraudStatus)))
-                    .withHeaders()
-                    .contentTypeJson()
-                    .andExecuteFor()
-                    .anObject()
-                    .ofType(String)
+            LoanAppForDecisionService loanAppForDecisionService = new LoanAppForDecisionService(loanApplication, fraudStatus)
+            sendFraudStatusToDecisionMaker(loanApplicationId, loanAppForDecisionService)
+
         }
         return new ResponseEntity<Object>(HttpStatus.OK)
     }
 
+    private void sendFraudStatusToDecisionMaker(
+            long loanApplicationId,
+            LoanAppForDecisionService loanAppForDecisionService) {
+
+        serviceRestClient.forService(DECISION_MAKER)
+                .put()
+                .onUrl(DECISION_MAKER_URL_PREFIX + loanApplicationId)
+                .body(JsonOutput.toJson(loanAppForDecisionService))
+                .withHeaders()
+                    .contentTypeJson()
+                .andExecuteFor()
+                .anObject()
+                .ofType(String)
+    }
 }
 
 
