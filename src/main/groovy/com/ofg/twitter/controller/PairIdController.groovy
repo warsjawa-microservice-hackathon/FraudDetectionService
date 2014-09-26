@@ -46,16 +46,18 @@ class PairIdController {
         // TODO(dst): add logic here
         loanApplication.fraudStatus = determineClientType(loanApplication)
         log.info("client status is {}", loanApplication.fraudStatus)
-
-        serviceRestClient.forService(DECISION_MAKER)
-                .post()
-                .onUrl(DECISION_MAKER_URL + loanApplicationId)
-                .body(JsonOutput.toJson(loanApplication))
-                .withHeaders()
-                .contentTypeJson()
-                .andExecuteFor()
-                .anObject()
-                .ofType(String)
+        if(loanApplication.fraudStatus==ClientType.FISHY) {
+            log.info("client is fishy, reporting to decisionmaker")
+            serviceRestClient.forService(DECISION_MAKER)
+                    .post()
+                    .onUrl(DECISION_MAKER_URL + loanApplicationId)
+                    .body(JsonOutput.toJson(loanApplication))
+                    .withHeaders()
+                    .contentTypeJson()
+                    .andExecuteFor()
+                    .anObject()
+                    .ofType(String)
+        }
         return new ResponseEntity<Object>(HttpStatus.OK)
     }
 
